@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>For My Love 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #ffe4f1, #f3e7ff, #f9fafb);
+      color: #111827;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 24px;
+      max-width: 900px;
+      width: 95%;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .heart {
+      color: #ec4899;
+    }
+
+    .counter-container {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #fdf2ff, #e0f2fe);
+      border: 1px solid rgba(190, 24, 93, 0.1);
+    }
+
+    .counter-label {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .counter-big {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #be185d;
+      margin-bottom: 4px;
+    }
+
+    .counter-small {
+      font-size: 0.95rem;
+      color: #374151;
+    }
+
+    .photos-title {
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      aspect-ratio: 4 / 5;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: #e5e7eb;
+      cursor: pointer;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      color: #f9fafb;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .title {
+        font-size: 1.4rem;
+      }
+
+      .counter-big {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* === SMOOTH, THEMED IMAGE POPUP === */
+
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: radial-gradient(circle at top, rgba(255, 228, 241, 0.8),
+          rgba(243, 231, 255, 0.85),
+          rgba(249, 250, 251, 0.9));
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 50;
+    }
+
+    .image-modal.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .image-modal-content {
+      position: relative;
+      max-width: min(90vw, 720px);
+      max-height: 90vh;
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 25px 50px rgba(148, 163, 184, 0.6);
+      border: 1px solid rgba(244, 114, 182, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transform: translateY(10px) scale(0.96);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .image-modal.visible .image-modal-content {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .image-modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 18px;
+    }
+
+    .image-modal-caption {
+      font-size: 0.9rem;
+      color: #4b5563;
+      text-align: center;
+      padding-top: 4px;
+    }
+
+    .image-modal-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border: none;
+      background: rgba(248, 250, 252, 0.95);
+      color: #be185d;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 16px rgba(148, 163, 184, 0.5);
+    }
+
+    .image-modal-close:hover {
+      background: rgba(251, 207, 232, 0.95);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1 class="title">For My Yayy Yayy <span class="heart">♥</span></h1>
+    <p class="subtitle">
+      A tiny page to show how long we've been together and some of our favorite memories.
+    </p>
+
+    <!-- Relationship counter -->
+    <div class="counter-container">
+      <div class="counter-label">We’ve been together for</div>
+      <div id="days-together" class="counter-big">0 days</div>
+      <div id="time-together" class="counter-small">0 hours 0 minutes 0 seconds</div>
+      <div class="counter-small" id="since-date"></div>
+    </div>
+
+    <!-- Photos -->
+    <h2 class="photos-title">Our Moments 📸</h2>
+    <div class="photos-grid" id="photos-grid"></div>
+
+    <p class="footer-note">
+      No matter how many days pass, I’m grateful for every single one with you. 💗
+    </p>
+  </div>
+
+  <!-- IMAGE POPUP -->
+  <div id="image-modal" class="image-modal">
+    <div class="image-modal-content">
+      <button class="image-modal-close" aria-label="Close image">&times;</button>
+      <img id="modal-image" src="" alt="" />
+      <div id="modal-caption" class="image-modal-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    // 👉 RELATIONSHIP START DATE
+    const relationshipStart = new Date(2025, 0, 17); // 2025 Jan 17
+
+    const daysElement = document.getElementById("days-together");
+    const timeElement = document.getElementById("time-together");
+    const sinceElement = document.getElementById("since-date");
+
+    const sinceFormatted = relationshipStart.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    sinceElement.textContent = "Since " + sinceFormatted;
+
+    function updateCounter() {
+      const now = new Date();
+      const diffMs = now - relationshipStart;
+
+      if (diffMs < 0) {
+        daysElement.textContent = "0 days";
+        timeElement.textContent = "0 hours 0 minutes 0 seconds";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const days = Math.floor(totalSeconds / (60 * 60 * 24));
+      const remainingAfterDays = totalSeconds % (60 * 60 * 24);
+      const hours = Math.floor(remainingAfterDays / (60 * 60));
+      const remainingAfterHours = remainingAfterDays % (60 * 60);
+      const minutes = Math.floor(remainingAfterHours / 60);
+      const seconds = remainingAfterHours % 60;
+
+      daysElement.textContent = days + (days === 1 ? " day" : " days");
+      timeElement.textContent =
+        hours + " hours " + minutes + " minutes " + seconds + " seconds";
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+
+    // 👉 YOUR PHOTOS + CAPTIONS
+    const photos = [
+      { src: "photo/1.jpg", caption: "Our first date 💫" },
+      { src: "photo/2.jpg", caption: "ကောင်းချစ်သူမွေးနေ့က" },
+      { src: "photo/3.jpg", caption: "ကောင်းချစ်သူမွေးနေ့က" },
+      { src: "photo/4.jpg", caption: "Just us, being us 💕" },
+      { src: "photo/5.jpg", caption: "စနပ်လေး" },
+      { src: "photo/6.jpg", caption: "ကျောင်း ထမနဲပွဲမှာ" },
+      { src: "photo/7.jpg", caption: "Study Date" },
+      { src: "photo/8.jpg", caption: "Favourite" },
+      { src: "photo/9.jpg", caption: "ပထဆုံး Chrono Date" },
+      { src: "photo/10.jpg", caption: "ထူးထူးရိုက်ပေးတာ" },
+      { src: "photo/11.jpg", caption: "ညစာစားရင်း အချင်းများ" },
+      { src: "photo/12.jpg", caption: "Activity Room" },
+      { src: "photo/13.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/14.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/15.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/16.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/17.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/18.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/19.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+      { src: "photo/20.jpg", caption: "Chess Club" },
+      { src: "photo/21.jpg", caption: "Chess Club" },
+      { src: "photo/22.jpg", caption: "နာမည်ကြီး ထမင်းငတ်" },
+      { src: "photo/23.jpg", caption: "ငလျင်ကြောင့် အိမ်ပြန်" },
+      { src: "photo/24.jpg", caption: "Nice AI" },
+      { src: "photo/25.jpg", caption: "ခွေးနှစ်ကောင်" },
+      { src: "photo/26.jpg", caption: "မတည့်ဖြစ်တာနဲ့ တူတယ်" },
+      { src: "photo/27.jpg", caption: "မန္တလေးတောင်တတ်" },
+      { src: "photo/28.jpg", caption: "အစ်မစုစု၀င်းထိုက် ရိုက်ပေးတာ" },
+      { src: "photo/29.jpg", caption: "‌Phyn Oo Lwin" },
+      { src: "photo/30.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
+      { src: "photo/31.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
+      { src: "photo/32.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
+      { src: "photo/33.jpg", caption: "Pyin Oo Lwin Trip" },
+      { src: "photo/34.jpg", caption: "Pyin Oo Lwin Trip" },
+      { src: "photo/35.jpg", caption: "Pyin Oo Lwin Trip" },
+      { src: "photo/36.jpg", caption: "ဘုရားသွား" },
+      { src: "photo/37.jpg", caption: "သူများဆု လက်ကကိုမချဘူး" },
+      { src: "photo/38.jpg", caption: "မန္တလေးတောင်တတ်" },
+    ];
+
+    const photosGrid = document.getElementById("photos-grid");
+
+    // Modal elements
+    const imageModal = document.getElementById("image-modal");
+    const modalImage = document.getElementById("modal-image");
+    const modalCaption = document.getElementById("modal-caption");
+    const modalClose = document.querySelector(".image-modal-close");
+
+    function openImage(src, caption) {
+      modalImage.src = src;
+      modalImage.alt = caption;
+      modalCaption.textContent = caption;
+      imageModal.classList.add("visible");
+    }
+
+    function closeImage() {
+      imageModal.classList.remove("visible");
+    }
+
+    modalClose.addEventListener("click", closeImage);
+
+    imageModal.addEventListener("click", (event) => {
+      // close when clicking outside the content box
+      if (event.target === imageModal) {
+        closeImage();
+      }
+    });
+
+    // Optional: close with ESC key
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeImage();
+      }
+    });
+
+    photos.forEach((photo) => {
+      const card = document.createElement("div");
+      card.className = "photo-card";
+
+      const img = document.createElement("img");
+      img.src = photo.src;
+      img.alt = photo.caption;
+
+      const caption = document.createElement("div");
+      caption.className = "photo-caption";
+      caption.textContent = photo.caption;
+
+      card.appendChild(img);
+      card.appendChild(caption);
+      photosGrid.appendChild(card);
+
+      // click to open popup
+      card.addEventListener("click", () => openImage(photo.src, photo.caption));
+    });
+  </script>
+</body>
+
+</html>
