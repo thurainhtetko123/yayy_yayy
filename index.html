@@ -266,143 +266,179 @@
   </div>
 
   <script>
-    // 👉 RELATIONSHIP START DATE
-    const relationshipStart = new Date(2025, 0, 17); // 2025 Jan 17
+  // 👉 RELATIONSHIP START DATE
+  const relationshipStart = new Date(2025, 0, 17); // 2025 Jan 17
 
-    const daysElement = document.getElementById("days-together");
-    const timeElement = document.getElementById("time-together");
-    const sinceElement = document.getElementById("since-date");
+  const daysElement = document.getElementById("days-together");
+  const timeElement = document.getElementById("time-together");
+  const sinceElement = document.getElementById("since-date");
 
-    const sinceFormatted = relationshipStart.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    sinceElement.textContent = sinceFormatted + " ကစလို့";
+  const sinceFormatted = relationshipStart.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  sinceElement.textContent = sinceFormatted + " ကစလို့";
 
-    function updateCounter() {
-      const now = new Date();
-      const diffMs = now - relationshipStart;
+  function updateCounter() {
+    const now = new Date();
+    const diffMs = now - relationshipStart;
 
-      if (diffMs < 0) {
-        daysElement.textContent = "0 ရက်";
-        timeElement.textContent = "0 နာရီ 0 မိနစ် 0 စက္ကန့်";
-        return;
-      }
-
-      const totalSeconds = Math.floor(diffMs / 1000);
-      const days = Math.floor(totalSeconds / (60 * 60 * 24));
-      const remainingAfterDays = totalSeconds % (60 * 60 * 24);
-      const hours = Math.floor(remainingAfterDays / (60 * 60));
-      const remainingAfterHours = remainingAfterDays % (60 * 60);
-      const minutes = Math.floor(remainingAfterHours / 60);
-      const seconds = remainingAfterHours % 60;
-
-      daysElement.textContent = days + (days === 1 ? " ရက်" : " ရက်");
-      timeElement.textContent =
-        hours + " နာရီ " + minutes + " မိနစ် " + seconds + " စက္ကန့်";
+    if (diffMs < 0) {
+      daysElement.textContent = "0 ရက်";
+      timeElement.textContent = "0 နာရီ 0 မိနစ် 0 စက္ကန့်";
+      return;
     }
 
-    updateCounter();
-    setInterval(updateCounter, 1000);
+    const totalSeconds = Math.floor(diffMs / 1000);
+    const days = Math.floor(totalSeconds / (60 * 60 * 24));
+    const remainingAfterDays = totalSeconds % (60 * 60 * 24);
+    const hours = Math.floor(remainingAfterDays / (60 * 60));
+    const remainingAfterHours = remainingAfterDays % (60 * 60);
+    const minutes = Math.floor(remainingAfterHours / 60);
+    const seconds = remainingAfterHours % 60;
 
-    // 👉 YOUR PHOTOS + CAPTIONS
-    const photos = [
-      { src: "photo/1.jpg", caption: "Our first date 💫" },
-      { src: "photo/2.jpg", caption: "ကောင်းချစ်သူမွေးနေ့က" },
-      { src: "photo/3.jpg", caption: "ကောင်းချစ်သူမွေးနေ့က" },
-      { src: "photo/4.jpg", caption: "Just us, being us 💕" },
-      { src: "photo/5.jpg", caption: "စနပ်လေး" },
-      { src: "photo/6.jpg", caption: "ကျောင်း ထမနဲပွဲမှာ" },
-      { src: "photo/7.jpg", caption: "Study Date" },
-      { src: "photo/8.jpg", caption: "Favourite" },
-      { src: "photo/9.jpg", caption: "ပထဆုံး Chrono Date" },
-      { src: "photo/10.jpg", caption: "ထူးထူးရိုက်ပေးတာ" },
-      { src: "photo/11.jpg", caption: "ညစာစားရင်း အချင်းများ" },
-      { src: "photo/12.jpg", caption: "Activity Room" },
-      { src: "photo/13.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/14.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/15.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/16.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/17.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/18.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/19.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
-      { src: "photo/20.jpg", caption: "Chess Club" },
-      { src: "photo/21.jpg", caption: "Chess Club" },
-      { src: "photo/22.jpg", caption: "နာမည်ကြီး ထမင်းငတ်" },
-      { src: "photo/23.jpg", caption: "ငလျင်ကြောင့် အိမ်ပြန်" },
-      { src: "photo/24.jpg", caption: "Nice AI" },
-      { src: "photo/25.jpg", caption: "ခွေးနှစ်ကောင်" },
-      { src: "photo/26.jpg", caption: "မတည့်ဖြစ်တာနဲ့ တူတယ်" },
-      { src: "photo/27.jpg", caption: "မန္တလေးတောင်တတ်" },
-      { src: "photo/28.jpg", caption: "အစ်မစုစု၀င်းထိုက် ရိုက်ပေးတာ" },
-      { src: "photo/29.jpg", caption: "‌Phyn Oo Lwin" },
-      { src: "photo/30.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
-      { src: "photo/31.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
-      { src: "photo/32.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
-      { src: "photo/33.jpg", caption: "Pyin Oo Lwin Trip" },
-      { src: "photo/34.jpg", caption: "Pyin Oo Lwin Trip" },
-      { src: "photo/35.jpg", caption: "Pyin Oo Lwin Trip" },
-      { src: "photo/36.jpg", caption: "ဘုရားသွား" },
-      { src: "photo/37.jpg", caption: "သူများဆု လက်ကကိုမချဘူး" },
-      { src: "photo/38.jpg", caption: "မန္တလေးတောင်တတ်" },
-    ];
+    daysElement.textContent = days + " ရက်";
+    timeElement.textContent =
+      hours + " နာရီ " + minutes + " မိနစ် " + seconds + " စက္ကန့်";
+  }
 
-    const photosGrid = document.getElementById("photos-grid");
+  updateCounter();
+  setInterval(updateCounter, 1000);
 
-    // Modal elements
-    const imageModal = document.getElementById("image-modal");
-    const modalImage = document.getElementById("modal-image");
-    const modalCaption = document.getElementById("modal-caption");
-    const modalClose = document.querySelector(".image-modal-close");
+  // 👉 YOUR PHOTOS + CAPTIONS
+  const photos = [
+    { src: "photo/1.jpg", caption: "Our first date 💫" },
+    { src: "photo/2.jpg", caption: "ကောင်းချစ်သူမွေးနေ့က" },
+    { src: "photo/3.jpg", caption: "ကောင်းချစ်သူမွေးနေ့က" },
+    { src: "photo/4.jpg", caption: "Just us, being us 💕" },
+    { src: "photo/5.jpg", caption: "စနပ်လေး" },
+    { src: "photo/6.jpg", caption: "ကျောင်း ထမနဲပွဲမှာ" },
+    { src: "photo/7.jpg", caption: "Study Date" },
+    { src: "photo/8.jpg", caption: "Favourite" },
+    { src: "photo/9.jpg", caption: "ပထဆုံး Chrono Date" },
+    { src: "photo/10.jpg", caption: "ထူးထူးရိုက်ပေးတာ" },
+    { src: "photo/11.jpg", caption: "ညစာစားရင်း အချင်းများ" },
+    { src: "photo/12.jpg", caption: "Activity Room" },
+    { src: "photo/13.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/14.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/15.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/16.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/17.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/18.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/19.jpg", caption: "Tun Zaw Myo ရိုက်ပေးတာ" },
+    { src: "photo/20.jpg", caption: "Chess Club" },
+    { src: "photo/21.jpg", caption: "Chess Club" },
+    { src: "photo/22.jpg", caption: "နာမည်ကြီး ထမင်းငတ်" },
+    { src: "photo/23.jpg", caption: "ငလျင်ကြောင့် အိမ်ပြန်" },
+    { src: "photo/24.jpg", caption: "Nice AI" },
+    { src: "photo/25.jpg", caption: "ခွေးနှစ်ကောင်" },
+    { src: "photo/26.jpg", caption: "မတည့်ဖြစ်တာနဲ့ တူတယ်" },
+    { src: "photo/27.jpg", caption: "မန္တလေးတောင်တတ်" },
+    { src: "photo/28.jpg", caption: "အစ်မစုစု၀င်းထိုက် ရိုက်ပေးတာ" },
+    { src: "photo/29.jpg", caption: "‌Phyn Oo Lwin" },
+    { src: "photo/30.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
+    { src: "photo/31.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
+    { src: "photo/32.jpg", caption: "စိတ်ပေါက်လို့ ပုံရိုက်" },
+    { src: "photo/33.jpg", caption: "Pyin Oo Lwin Trip" },
+    { src: "photo/34.jpg", caption: "Pyin Oo Lwin Trip" },
+    { src: "photo/35.jpg", caption: "Pyin Oo Lwin Trip" },
+    { src: "photo/36.jpg", caption: "ဘုရားသွား" },
+    { src: "photo/37.jpg", caption: "သူများဆု လက်ကကိုမချဘူး" },
+    { src: "photo/38.jpg", caption: "မန္တလေးတောင်တတ်" },
+  ];
 
-    function openImage(src, caption) {
-      modalImage.src = src;
-      modalImage.alt = caption;
-      modalCaption.textContent = caption;
-      imageModal.classList.add("visible");
-    }
+  const photosGrid = document.getElementById("photos-grid");
 
-    function closeImage() {
-      imageModal.classList.remove("visible");
-    }
+  // Modal elements
+  const imageModal = document.getElementById("image-modal");
+  const modalImage = document.getElementById("modal-image");
+  const modalCaption = document.getElementById("modal-caption");
+  const modalClose = document.querySelector(".image-modal-close");
 
-    modalClose.addEventListener("click", closeImage);
+  // 👉 OPTION C: PRELOAD ALL IMAGES FOR THE MODAL
+  const preloadedImages = new Map();
 
-    imageModal.addEventListener("click", (event) => {
-      // close when clicking outside the content box
-      if (event.target === imageModal) {
-        closeImage();
+  photos.forEach((photo) => {
+    const img = new Image();
+    img.src = photo.src;   // starts loading immediately
+    preloadedImages.set(photo.src, img);
+  });
+
+  function openImage(src, caption) {
+    // Clear previous image so it doesn't flash
+    modalImage.src = "";
+    modalCaption.textContent = "";
+
+    // Show modal first (with blank img)
+    imageModal.classList.add("visible");
+
+    const preloaded = preloadedImages.get(src);
+
+    if (preloaded && preloaded.complete) {
+      // Image already fully loaded in memory → set it on next frame
+      requestAnimationFrame(() => {
+        modalImage.src = preloaded.src;
+        modalImage.alt = caption;
+        modalCaption.textContent = caption;
+      });
+    } else {
+      // Fallback: if somehow not loaded yet, wait for it
+      const img = preloaded || new Image();
+      if (!preloaded) {
+        img.src = src;
+        preloadedImages.set(src, img);
       }
-    });
+      img.onload = () => {
+        modalImage.src = img.src;
+        modalImage.alt = caption;
+        modalCaption.textContent = caption;
+      };
+    }
+  }
 
-    // Optional: close with ESC key
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeImage();
-      }
-    });
+  function closeImage() {
+    imageModal.classList.remove("visible");
+  }
 
-    photos.forEach((photo) => {
-      const card = document.createElement("div");
-      card.className = "photo-card";
+  modalClose.addEventListener("click", closeImage);
 
-      const img = document.createElement("img");
-      img.src = photo.src;
-      img.alt = photo.caption;
+  imageModal.addEventListener("click", (event) => {
+    // close when clicking outside the content box
+    if (event.target === imageModal) {
+      closeImage();
+    }
+  });
 
-      const caption = document.createElement("div");
-      caption.className = "photo-caption";
-      caption.textContent = photo.caption;
+  // Optional: close with ESC key
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeImage();
+    }
+  });
 
-      card.appendChild(img);
-      card.appendChild(caption);
-      photosGrid.appendChild(card);
+  // Build the photo cards
+  photos.forEach((photo) => {
+    const card = document.createElement("div");
+    card.className = "photo-card";
 
-      // click to open popup
-      card.addEventListener("click", () => openImage(photo.src, photo.caption));
-    });
-  </script>
+    const img = document.createElement("img");
+    img.src = photo.src;
+    img.alt = photo.caption;
+
+    const caption = document.createElement("div");
+    caption.className = "photo-caption";
+    caption.textContent = photo.caption;
+
+    card.appendChild(img);
+    card.appendChild(caption);
+    photosGrid.appendChild(card);
+
+    // click to open popup
+    card.addEventListener("click", () => openImage(photo.src, photo.caption));
+  });
+</script>
+
 </body>
 
 </html>
